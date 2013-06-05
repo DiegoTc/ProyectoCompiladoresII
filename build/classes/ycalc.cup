@@ -1,0 +1,368 @@
+import java_cup.runtime.*;
+import java.util.ArrayList;
+import arbol.declaraciones.*;
+import arbol.expresiones.*;
+import arbol.sentencias.*;
+import arbol.tipos.*;
+
+parser code {:
+    
+  
+    public void report_error(String message, Object info) {
+   
+       
+        StringBuffer m = new StringBuffer("Error");
+   
+       
+        if (info instanceof java_cup.runtime.Symbol) {
+           
+            java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
+   
+           
+            if (s.left >= 0) {                
+               
+                m.append(" in line "+(s.left+1));   
+               
+                if (s.right >= 0)                    
+                    
+                    m.append(", column "+(s.right+1));
+            }
+        }
+   
+       
+        m.append(" : "+message);
+   
+      
+        System.err.println(m);
+    }
+   
+  
+    public void report_fatal_error(String message, Object info) {
+        report_error(message, info);
+        System.exit(1);
+    }
+:};
+   
+
+
+terminal          SEMICOLON, COLON, SEMI, PLUS, MINUS, TIMES, DIVIDE, MOD, LBRACKET, RBRACKET, LPAR, RPAR, GREATER_THAN, GREATER_THAN_OR_EQUAL, LESS_THAN, LESS_THAN_OR_EQUAL, EQUAL, NOT_EQUAL, DOT, ASSIGN;
+terminal          PROGRAM, FUNCTION, VAR, CASE, IF, ELSE, WHILE, FOR, REPEAT, THEN, TO, DO, OF, UNTIL, BEGIN, END, AND, OR, REF, WRITELN, READLN;
+terminal          ARRAY, STRING, INT, BOOL, TYPE, CONST, NOT, FLOAT, VOID, CHAR, RECORD;
+
+//Types
+terminal int     INT_LITERAL;
+terminal String  ID;
+terminal String  STRING_LITERAL;
+terminal boolean BOOLEAN_LITERAL;
+terminal float   FLOAT_LITERAL;
+terminal char    CHAR_LITERAL;
+
+   
+
+/* 
+-------------------------------------
+non terminal productions principales
+-------------------------------------
+*/
+
+non terminal Program program;
+non terminal Bloque block;
+non terminal Declaracion decl_seq;
+non terminal Expresion parameter;
+non terminal Sentencia statement;
+non terminal Expresion expr;
+non terminal Expresion factor;
+non terminal Expresion term;
+non terminal Declaracion constant;
+non terminal Tipo type;
+non terminal Sentencia compound;
+non terminal Object case_list;
+non terminal Object case;
+non terminal Expresion addition;
+non terminal Expresion literal;
+non terminal Sentencia stms; 
+non terminal Declaracion functions;
+non terminal Declaracion function;
+non terminal Declaracion const_list;
+non terminal Declaracion const_decl;
+non terminal Declaracion type_list;
+non terminal Declaracion type_decl;
+non terminal Declaracion type_body;
+non terminal Declaracion var_decl;
+non terminal Declaracion decl_param;
+non terminal Declaracion decl_list;
+non terminal Expresion params;
+non terminal Expresion param;
+non terminal ArrayList<String> ids;
+non terminal Expresion expr_list;
+non terminal Sentencia function_call;
+non terminal Expresion function_callexpr;
+non terminal Access accesor_list;
+non terminal Expresion variable;
+non terminal Object else;
+
+/* BEGIN */
+
+program   ::= PROGRAM ID parameter SEMICOLON block:b1 DOT {:  RESULT= new Program(b1); :}
+              |
+              ;
+                       
+block     ::= decl_seq:d1 compound:c1 {: RESULT= new Bloque(d1,c1); :}
+              ;
+
+decl_seq  ::= constant:c1 type_decl:t1 var_decl:v1 functions:f1 {: RESULT = new DeclaracionSecuencia(c1,t1,v1,f1); :}               
+              ;
+
+//----------------------------
+constant  ::= CONST const_list:clist {: RESULT= clist;:} 
+              | 
+              ;
+
+type_decl ::= TYPE type_list:t1 {: RESULT=t1; :}
+              |
+              ;
+
+var_decl  ::= VAR decl_list:d1 {:RESULT=d1;:} 
+              |
+              ;
+
+//------------------------------
+
+const_list::= const_list:cd2 const_decl:cdlist 
+                {: 
+                    cdlist.setSiguiente(cd2);
+                    RESULT=cdlist;
+                :}
+              |
+              const_decl:cd1 {: RESULT=cd1; :}
+              ;
+
+const_decl::= ID:id EQUAL literal:lit SEMICOLON {: RESULT= new ConstantDeclaracion(id,lit); :}
+              ;
+
+
+functions ::= functions:flista function:f1 
+                {: 
+                   f1.setSiguiente(flista);
+                   RESULT=f1;
+                :}
+              |
+              ;
+
+function  ::= FUNCTION ID:id1 parameter:p1 COLON type:t1 SEMICOLON compound:c1 SEMICOLON
+                {: RESULT= new FuncionDeclaracion(id1,t1,p1,c1); :}
+              ;
+ 
+type_list ::= type_list:tb2 type_body:tlist 
+                {:
+                    tlist.setSiguiente(tb2);
+                    RESULT=tlist;
+                :} 
+              |
+              type_body:tb1 {: RESULT= tb1; :}
+              ;
+      
+type_body ::= ID:id1 EQUAL type:tipo1 SEMICOLON {: RESULT = new TipoDeclaracion(id1,tipo1); :}
+              ;
+
+parameter ::= LPAR params:p1 RPAR {: RESULT=p1; :}
+              |
+              ;
+
+params    ::= params:p1li SEMICOLON param:p1 {: p1li.siguiente=p1; RESULT=p1li;  :}
+              |
+              param:p1 {: RESULT=p1; :}
+              ; 
+
+param     ::= REF VAR ids:id1 COLON type:t1
+                       {: ConvertToExpreList list= new ConvertToExpreList(id1);
+                          ExpreList elist=list.getLista();
+                          RESULT=new ExpreParam(elist,t1);
+                      :}
+              |
+              VAR ids:id1 COLON type:t1
+                       {: ConvertToExpreList list= new ConvertToExpreList(id1);
+                          ExpreList elist=list.getLista();
+                          RESULT=new ExpreParam(elist,t1);
+                      :}
+              |
+              ids:id1 {: ConvertToExpreList list= new ConvertToExpreList(id1);
+                         ExpreList elist=list.getLista();
+                         RESULT=new ExpreParam(elist);
+                      :}
+              ;
+
+ids       ::= ID:id1 SEMI ids:id2 
+                {:ArrayList<String> list= new ArrayList<String>(); 
+                 list.add(id1);list.add(id2.get(0)); RESULT= list; :}
+              |
+              ID:id1 {:ArrayList<String> list= new ArrayList<String>(); list.add(id1); RESULT= list; :}
+              ;
+
+stms      ::= statement:st1 stms:sm1  {:st1.setSiguiente(sm1); RESULT= st1; :}   
+              |
+              statement:st1    {: RESULT=st1; :}         
+              ;
+
+statement ::= function_call:f1 SEMICOLON {:  RESULT=f1; :}
+              |
+              variable:v1 ASSIGN expr:e1 SEMICOLON  {: RESULT= new SentenciaAsignacion(v1,e1); :} /* ARRAY ASSIGN OR ID ASSIGN*/
+              |
+              IF expr:e1 THEN compound:c1 ELSE compound:c2 {: RESULT= new SentenciaIf(e1,c1,c2); :}
+              |
+              IF expr:e1 THEN compound:c1 {: RESULT= new SentenciaIf(e1,c1); :}
+              |
+              CASE expr OF 
+                 case_list
+                 else
+              END
+              |
+              WHILE expr:e1 DO compound:c1 {: RESULT= new SentenciaWhile(c1,e1); :}
+              |
+              FOR ID:i1 ASSIGN expr:e1 TO expr:e2 DO compound:c1 {:  RESULT= new SentenciaFor(i1,e1,e2,c1);:}
+              |
+              REPEAT compound:c1 UNTIL expr:e1  SEMICOLON {: RESULT= new SentenciaRepeat(e1,c1); :}  
+              |
+              WRITELN LPAR expr:e1 RPAR SEMICOLON  {: RESULT= new SentenciaWrite(e1); :}
+              |
+              READLN LPAR ID:id RPAR SEMICOLON  
+              ;
+
+else      ::= ELSE compound 
+              |
+              ;
+
+case_list ::= case case_list 
+              |
+              ;
+
+case      ::= expr_list COLON compound
+              ;
+
+compound  ::= BEGIN stms:s1 END {: RESULT=s1;:}
+              ;
+
+expr      ::= addition:a1 GREATER_THAN_OR_EQUAL addition:a2 {: RESULT= new ExpreGreaterEqual(a1,a2); :}
+              |
+              addition:a1 GREATER_THAN addition:a2  {: RESULT= new ExpreGreaterThan(a1,a2); :}
+              |
+              addition:a1 LESS_THAN addition:a2   {: RESULT= new ExpreLessThan(a1,a2); :}
+              |
+              addition:a1 LESS_THAN_OR_EQUAL addition:a2  {: RESULT= new ExpreLessEqual(a1,a2); :}
+              |
+              addition:a1 EQUAL addition:a2     {: RESULT= new ExpreEqual(a1,a2); :}
+              |
+              addition:a1 NOT_EQUAL addition:a2 {: RESULT= new ExpreNotEqual(a1,a2); :}
+              |
+              addition:a1 {:  RESULT=a1; :}
+              ;
+
+addition  ::= addition:a1 PLUS factor:f1     {: RESULT= new ExpreSuma(a1,f1); :}
+              |
+              addition:a1 MINUS factor:f1    {: RESULT= new ExpreResta(a1,f1); :}
+              |
+              addition:a1 OR factor:f1 {: RESULT= new ExpreOr(a1,f1); :}
+              | 
+              factor:f1 {:  RESULT=f1; :}
+              ;
+
+factor    ::= factor:f1 TIMES term:t1  {: RESULT= new ExpreMultiplicacion(f1,t1); :}
+              |
+              factor:f1 DIVIDE term:t1 {: RESULT= new ExpreDivision(f1,t1); :}
+              |              
+              factor:f1 MOD term:t1 {: RESULT= new ExpreMod(f1,t1); :}
+              |
+              factor:f1 AND term:t1 {: RESULT= new ExpreAnd(f1,t1); :}
+              |
+              term:t1 {:  RESULT=t1; :}
+              ;
+
+term      ::= literal:l1 {:  RESULT=l1; :}
+              | 
+              NOT term:t1 {: RESULT= new ExpreNot(t1); :}
+              | 
+              LPAR expr:e1 RPAR {:  RESULT=e1; :} /* ((4+3)*5) */
+              | 
+              function_callexpr
+              |
+              variable:v1 {: RESULT= v1; :}
+              ;
+
+literal   ::= STRING_LITERAL:s1 {: RESULT= new LiteralString(s1); :}
+              | 
+              BOOLEAN_LITERAL:b1   {: RESULT = new LiteralBooleana(b1); :}
+              | 
+              FLOAT_LITERAL:f1 {: RESULT=new LiteralFloat(f1); :} 
+              |
+              CHAR_LITERAL:c1  {: RESULT=new LiteralChar(c1); :} 
+              | 
+              INT_LITERAL:i1 {: RESULT=new LiteralEntero(i1); :} 
+              ;
+
+function_call ::= ID:id1 LPAR expr_list:exprlist RPAR {: RESULT= new SentenciaLlamadaFuncion(exprlist,id1); :}
+              ;
+
+function_callexpr ::= ID:id1 LPAR expr_list:exprlist RPAR {: RESULT= new ExpreFunctionCall(exprlist,id1); :}
+              ;
+         
+variable      ::= ID:id accesor_list:list {: 
+                                            ExpreVariables tid= new ExpreVariables(id,list);
+                                            RESULT=tid;
+                                          :}
+              ;
+
+accesor_list ::= 
+              DOT ID:id accesor_list:aclist  {: AccessMiembro miembro= new AccessMiembro(id); 
+                                                AccessLista lista= new AccessLista();
+                                                lista.lista.add(miembro);
+                                                RESULT=lista;
+                                             :}
+              |
+              LBRACKET expr_list:elist RBRACKET accesor_list:alist
+                                        {:  AccessArreglo arreglo= new AccessArreglo(elist,alist);
+                                            RESULT=arreglo;
+                                            
+                                        :}
+              |
+              ;
+
+expr_list     ::= expr_list:lista SEMI expr:e1 {: ExpreList list= new ExpreList(); list.lista.add(e1);  :} 
+              | 
+              expr:e1 {: RESULT=e1; :}
+              ;
+
+type          ::= ARRAY LBRACKET expr_list:e1 RBRACKET OF type:t1 {: RESULT= new TipoArray(e1,t1); :}
+              |
+              RECORD decl_list:dlist END {: RESULT= new TipoRecord(dlist); :} 
+              |
+              STRING {: RESULT= new TipoString(); :}
+              |
+              CHAR  {: RESULT= new TipoChar(); :}
+              |
+              FLOAT {: RESULT= new TipoFloat(); :}
+              |
+              INT  {: RESULT= new TipoInt(); :}
+              |
+              BOOL {: RESULT= new TipoBooleano(); :}
+              |
+              ID   {: RESULT= new TipoId(); :}
+              |
+              VOID {: RESULT= new TipoVoid(); :}
+              ;
+
+decl_param    ::= ids:id1 COLON type:t1 SEMICOLON {:RESULT= new VarDeclaracion(id1,t1); :}
+              ;
+
+decl_list     ::= 
+              decl_list:d2 decl_param:d1 
+              {: 
+                 d1.setSiguiente(d2);
+                 RESULT=d1;
+                   
+              :}
+              |
+              decl_param:d1 {: RESULT=d1; :}
+              ;
+
+
+

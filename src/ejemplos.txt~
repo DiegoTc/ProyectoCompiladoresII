@@ -1,0 +1,93 @@
+/*EJEMPLO DE DECLARACION DE ARREGLOS*/
+Var
+    myVar   : Integer;
+    myArray : Array[5] of Integer;
+
+Begin
+ myArray[2] := 25;
+ myVar := myArray[2];
+End.
+
+/**EJEMPLO 2 **/
+
+program raiz(input, output);
+ (*Obtener la raíz cuadrada de un número real x cualquiera.*)
+ 
+ var 
+    x, y: real;
+    respuesta: string;
+ 
+ begin
+   writeln('** Calcular la raíz cuadrada de 12 **');
+   writeln('Entrar x (> 0): ');
+   readln(x);
+   y := sqrt(abs(x)); (* Raíz cuadrada del valor absoluto de x para evitar raíces imaginarias *)
+   if (x<0) then (* Si x es negativo, el resultado se notifica como imaginario *)
+   begin
+      writeln('La raíz cuadrada de '+ x +' es el número imaginario '+ y +'i');
+   end
+   else
+   begin
+      writeln('La raíz cuadrada de ' + x + ' es '+y);
+   end
+   writeln('Fin');
+ end.
+
+
+/**EJEMPLO 3 ****/
+
+program Sort(input, output);
+
+                     
+begin
+   writeln('** Calcular la raíz cuadrada de 12 **');
+   for i := 0 to 5 do
+   begin
+      writeln('** Calcular la raíz cuadrada de 12 **');
+   end
+end.
+
+/****EJEMPLO 4 ****/
+
+
+program Sort(input, output);
+
+type
+    Str25    = string;
+    TBookRec = record
+                ISBN  : string;
+                Price : int;
+               end;
+var
+    myBookRec : TBookRec;
+    myVar   : int;
+    myArray : array[5] of int;
+
+Function PythagorasFunc(A) : int;
+begin
+ PythagorasFunc := SQRT(A); 
+end
+
+
+begin
+ myArray[2] := 25;
+ myVar := myArray[2];
+end.
+
+/*****EJEMPLO 5 ***/
+program Sort(input, output);
+
+
+
+Function PythagorasFunc(A) : int;
+begin
+    a:=2;
+end;
+
+
+begin
+ myArray[2] := 25;
+ myVar := myArray[2];
+end.
+
+/
