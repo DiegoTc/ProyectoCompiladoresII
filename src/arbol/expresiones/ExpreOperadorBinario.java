@@ -4,6 +4,8 @@
  */
 package arbol.expresiones;
 
+import arbol.tipos.Tipo;
+
 /**
  *
  * @author diego
@@ -32,5 +34,11 @@ public abstract class ExpreOperadorBinario  extends Expresion{
         this.izquierdo = izquierdo;
         this.derecho = derecho;
     }
-    
+    @Override
+    public Tipo validarSemantica() {
+        Tipo izq,der;
+        izq=izquierdo.validarSemantica();
+        der=derecho.validarSemantica();
+        return izq;
+    }
 }

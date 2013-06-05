@@ -15,8 +15,12 @@ public class ExpreDivision extends ExpreOperadorBinario{
     public ExpreDivision(Expresion izquierdo, Expresion derecho) {
         super(izquierdo, derecho);
     }
-     @Override
+    
+    @Override
     public Tipo validarSemantica() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Tipo izq,der;
+        izq=izquierdo.validarSemantica();
+        der=derecho.validarSemantica();
+        return izq;
     }
 }

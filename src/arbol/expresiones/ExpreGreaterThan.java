@@ -18,7 +18,10 @@ public class ExpreGreaterThan extends ExpreOperadorBinario {
 
     @Override
     public Tipo validarSemantica() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Tipo izq,der;
+        izq=izquierdo.validarSemantica();
+        der=derecho.validarSemantica();
+        return izq;
     }
     
 }
