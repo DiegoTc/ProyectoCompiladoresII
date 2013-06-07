@@ -117,6 +117,8 @@ StringCharacter = [^\r\n\'\\]
     "type"             { return symbol(sym.TYPE); }
     "const"            { return symbol(sym.CONST); }
     "record"           { return symbol(sym.RECORD); }
+    "true"            { return symbol(sym.TRUE); }
+    "false"           { return symbol(sym.FALSE); }
 
     /* types */
     "array"            { return symbol(sym.ARRAY); }

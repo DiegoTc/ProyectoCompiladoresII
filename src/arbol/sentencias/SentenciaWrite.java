@@ -5,6 +5,8 @@
 package arbol.sentencias;
 
 import arbol.expresiones.Expresion;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,7 +29,11 @@ public class SentenciaWrite extends Sentencia{
 
     @Override
     public void validarSemantica() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            expre1.validarSemantica();
+        } catch (Exception ex) {
+            Logger.getLogger(SentenciaWrite.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     

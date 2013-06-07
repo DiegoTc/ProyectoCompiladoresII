@@ -8,7 +8,7 @@ package arbol.sentencias;
  *
  * @author diego
  */
-public class SentenciaPrint extends Sentencia{
+public class SentenciaRead extends Sentencia{
     String id;
 
     public String getId() {
@@ -19,7 +19,7 @@ public class SentenciaPrint extends Sentencia{
         this.id = id;
     }
 
-    public SentenciaPrint(String id) {
+    public SentenciaRead(String id) {
         this.id = id;
     }
 

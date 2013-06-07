@@ -57,7 +57,12 @@ public class SentenciaAsignacion extends Sentencia{
                     Logger.getLogger(SentenciaAsignacion.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            Tipo val=valor.validarSemantica();
+            Tipo val=null;
+            try {
+                val = valor.validarSemantica();
+            } catch (Exception ex) {
+                Logger.getLogger(SentenciaAsignacion.class.getName()).log(Level.SEVERE, null, ex);
+            }
             if(!val.esEquivalente(var)){
                 try {
                     StringBuilder message=new StringBuilder("Error Semantico, el tipo ");

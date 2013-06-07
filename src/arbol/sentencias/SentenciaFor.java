@@ -5,6 +5,11 @@
 package arbol.sentencias;
 
 import arbol.expresiones.Expresion;
+import arbol.tipos.Tipo;
+import arbol.tipos.TipoBooleano;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import semantica.InfSemantica;
 
 /**
  *
@@ -56,7 +61,48 @@ public class SentenciaFor extends Sentencia{
 
     @Override
     public void validarSemantica() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Tipo var=null;
+        if(InfSemantica.getInstancia().tablaGlobal.containsKey(id))
+        {
+            var=InfSemantica.getInstancia().tablaGlobal.get(id);
+        }
+        else{
+            try {
+                    throw new Exception("Error Semantico, la variable"+id+" no a sido declarada");
+            } catch (Exception ex) {
+                    Logger.getLogger(SentenciaAsignacion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        Tipo val=null;
+        try {
+            val = condicion.validarSemantica();
+        } catch (Exception ex) {
+            Logger.getLogger(SentenciaAsignacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(!val.esEquivalente(var)){
+            try {
+                StringBuilder message=new StringBuilder("Error Semantico, el tipo ");
+                message.append(var.toString());
+                message.append(" no coincide con el valor asignado");
+                throw new Exception(message.toString());
+            } catch (Exception ex) {
+                Logger.getLogger(SentenciaAsignacion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        Tipo val1=null;
+        try {
+            val1 = condicion2.validarSemantica();
+        } catch (Exception ex) {
+            Logger.getLogger(SentenciaAsignacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(val1 instanceof TipoBooleano){
+            Sentencia tmp= compound;
+            while(tmp!=null){
+                tmp.validarSemantica();
+                tmp=tmp.getSiguiente();
+            }
+        }
+            
     }
     
 

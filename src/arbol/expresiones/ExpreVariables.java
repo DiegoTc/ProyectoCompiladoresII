@@ -5,6 +5,7 @@
 package arbol.expresiones;
 
 import arbol.tipos.Tipo;
+import semantica.InfSemantica;
 
 /**
  *
@@ -39,6 +40,10 @@ public class ExpreVariables extends Expresion{
 
     @Override
     public Tipo validarSemantica() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Tipo tip=null;
+        if(InfSemantica.getInstancia().tablaGlobal.containsKey(name)){
+            tip=InfSemantica.getInstancia().tablaGlobal.get(name);
+        }
+        return tip;
     }
 }

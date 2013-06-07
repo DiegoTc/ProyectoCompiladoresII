@@ -5,6 +5,10 @@
 package arbol.sentencias;
 
 import arbol.expresiones.Expresion;
+import arbol.tipos.Tipo;
+import arbol.tipos.TipoBooleano;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -35,9 +39,28 @@ public class SentenciaRepeat extends Sentencia{
         this.bloque = bloque;
     }
 
-    @Override
+   @Override
     public void validarSemantica() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Tipo cond=null;
+        try {
+          cond  =condicion.validarSemantica();
+        } catch (Exception ex) {
+            Logger.getLogger(SentenciaWhile.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(cond instanceof TipoBooleano){
+            Sentencia tmp= bloque;
+            while(tmp!=null){
+                tmp.validarSemantica();
+                tmp=tmp.getSiguiente();
+            }
+        }
+        else{
+            try {
+                throw new Exception("Error Semantico -- La condicion tiene que ser booleana");
+            } catch (Exception ex) {
+                Logger.getLogger(SentenciaWhile.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     

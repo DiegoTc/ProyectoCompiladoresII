@@ -35,7 +35,7 @@ public abstract class ExpreOperadorBinario  extends Expresion{
         this.derecho = derecho;
     }
     @Override
-    public Tipo validarSemantica() {
+    public Tipo validarSemantica() throws Exception {
         Tipo izq,der;
         izq=izquierdo.validarSemantica();
         der=derecho.validarSemantica();

@@ -4,6 +4,8 @@
  */
 package arbol.declaraciones;
 
+import arbol.sentencias.Sentencia;
+
 
 /**
  *
@@ -27,7 +29,11 @@ public class Program {
     public void ValidarSemantica()
     {
         compound.d1.validarSemantica();
-        compound.s1.validarSemantica();
+        Sentencia tmp=compound.s1;
+        while(tmp!=null){
+            tmp.validarSemantica();
+            tmp=tmp.getSiguiente();
+        }
     }
     
 }   

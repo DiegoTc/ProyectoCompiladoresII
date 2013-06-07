@@ -5,6 +5,7 @@
 package arbol.expresiones;
 
 import arbol.tipos.Tipo;
+import arbol.tipos.TipoBooleano;
 
 /**
  *
@@ -16,11 +17,17 @@ public class ExpreEqual extends ExpreOperadorBinario{
         super(izquierdo, derecho);
     }
     
-    @Override
-    public Tipo validarSemantica() {
+      @Override
+    public Tipo validarSemantica() throws Exception {
         Tipo izq,der;
         izq=izquierdo.validarSemantica();
         der=derecho.validarSemantica();
-        return izq;
-    }
+
+            if (izq.esEquivalente(der)){
+                return new TipoBooleano();
+            }
+            else{
+                throw new Exception("Error Semantico no se puede comparar Tipo "+ izq.toString()+ " con Tipo "+ der.toString());
+        }
+     }
 }
