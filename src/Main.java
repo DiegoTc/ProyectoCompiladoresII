@@ -1,4 +1,5 @@
 
+import Generacion.TablaIds;
 import arbol.declaraciones.Program;
 import arbol.sentencias.Sentencia;
 import java.io.*;
@@ -12,9 +13,11 @@ public class Main {
       parser p = new parser(new Lexer(new FileReader("/home/diego/UNITEC/2013/CompiladoresII/ProyectoCompi2Cup/src/sort.pas")));
       Program result = (Program)p.parse().value;
       result.ValidarSemantica();
-      int a=1;
-      a++;
-      System.out.println("Programa Terminado");
+      System.out.println(TablaIds.getInstancia().getLocals());
+      System.out.println(result.GenerarCodigo());
+      System.out.println(TablaIds.getInstancia().getFinal());
+
+      //System.out.println("Programa Terminado");
     } catch (Exception e) {
       /* do cleanup here -- possibly rethrow e */
       e.printStackTrace();

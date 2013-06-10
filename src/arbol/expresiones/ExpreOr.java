@@ -36,4 +36,9 @@ public class ExpreOr extends ExpreOperadorBinario{
                 throw new Exception("Error Semantico no se puede comparar un Tipo Int o Float con un Tipo "+ der.toString());
         }
      }
+  
+   @Override
+    public String generarCodigo() {  
+        return izquierdo.generarCodigo()+derecho.generarCodigo();
+    } 
 }

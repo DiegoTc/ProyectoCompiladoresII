@@ -13,4 +13,5 @@ import arbol.tipos.Tipo;
 public abstract class Expresion {
     public Expresion siguiente;
     public abstract Tipo validarSemantica() throws Exception;
+    public abstract String generarCodigo();
 }

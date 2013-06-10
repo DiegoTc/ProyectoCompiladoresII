@@ -43,4 +43,9 @@ public class ExpreDivision extends ExpreOperadorBinario{
             throw new Exception("Error Semantico no se puede dividir Tipo "+ izq.toString()+ " con Tipo "+ der.toString());
         }
      }
+    
+    @Override
+    public String generarCodigo() {
+               return izquierdo.generarCodigo()+derecho.generarCodigo()+"div\n";
+    }
 }

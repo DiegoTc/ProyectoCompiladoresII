@@ -13,4 +13,8 @@ public class TipoString extends Tipo{
     public Boolean esEquivalente(Tipo t) {
         return t instanceof TipoString;
     }
+   @Override
+    public String toString(){
+        return "string";
+    }
 }

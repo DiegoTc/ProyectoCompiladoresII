@@ -61,4 +61,9 @@ public class ExpreSuma extends ExpreOperadorBinario{
     
     }
     
+     @Override
+    public String generarCodigo() {
+        return izquierdo.generarCodigo()+derecho.generarCodigo()+"add\n";
+    }
+    
 }

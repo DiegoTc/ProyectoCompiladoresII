@@ -30,5 +30,13 @@ public class LiteralString extends Expresion{
         return InfSemantica.getInstancia().tablaTipos.get("String");
     }
     
-   
+      @Override
+    public String generarCodigo() {
+        return "ldstr \"" +this.valor+"\"\n";
+                
+    }
+        @Override
+    public String toString(){
+        return "string";
+    }
 }

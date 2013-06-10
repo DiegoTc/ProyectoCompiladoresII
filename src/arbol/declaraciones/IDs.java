@@ -11,10 +11,10 @@ import java.util.ArrayList;
  * @author diego
  */
 public class IDs {
-    public ArrayList<String> lista;
+    public ArrayList<String> lista= new ArrayList<String>();
     public String nombre;
     public IDs() {
-        lista= new ArrayList<String>();
+        
     }
     
 }

@@ -30,4 +30,14 @@ public class LiteralFloat extends Expresion{
         return InfSemantica.getInstancia().tablaTipos.get("float");
     }
     
+     @Override
+    public String generarCodigo() {
+        return "ldc.r4 " +this.valor+"\n";
+                
+    }
+     
+      @Override
+    public String toString(){
+        return "float32";
+    } 
 }

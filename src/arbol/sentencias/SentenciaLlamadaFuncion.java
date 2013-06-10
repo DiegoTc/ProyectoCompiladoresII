@@ -40,5 +40,10 @@ public class SentenciaLlamadaFuncion extends Sentencia {
     public void validarSemantica() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public String generarCodigoSentencia() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
 }

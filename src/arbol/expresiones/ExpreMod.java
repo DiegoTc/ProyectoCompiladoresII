@@ -37,4 +37,8 @@ public class ExpreMod extends ExpreOperadorBinario{
         }
      }
     
+    @Override
+    public String generarCodigo() {
+        return izquierdo.generarCodigo()+derecho.generarCodigo()+"rem\n";
+    }
 }

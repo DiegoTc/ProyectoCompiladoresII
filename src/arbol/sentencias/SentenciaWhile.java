@@ -4,6 +4,7 @@
  */
 package arbol.sentencias;
 
+import Generacion.Info;
 import arbol.expresiones.Expresion;
 import arbol.tipos.Tipo;
 import arbol.tipos.TipoBooleano;
@@ -62,7 +63,19 @@ public class SentenciaWhile extends Sentencia{
             }
         }
     }
-    
+
+    @Override
+    public String generarCodigoSentencia() {
+        String etiqueta1 = Info.getIntancia().getEtiqueta("While");
+        String etiqueta2 = Info.getIntancia().getEtiqueta("EndWhile");
+        String etiqueta3=Info.getIntancia().getEtiqueta("CONDICION");
+        
+        String inicio= "br "+etiqueta3+ "\n"+ etiqueta1+ ":\n"+bloque.generarCodigo();
+        String cond= etiqueta3+":\n"+expr1.generarCodigo()+etiqueta1+"\n"+etiqueta2+":";
+        
+        return inicio+cond;
+       
+    }
     
     
 }

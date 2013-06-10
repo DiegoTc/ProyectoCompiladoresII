@@ -44,4 +44,8 @@ public class ExpreResta extends  ExpreOperadorBinario{
         
         }
     }
+    @Override
+    public String generarCodigo() {
+               return izquierdo.generarCodigo()+derecho.generarCodigo()+"sub\n";
+    }
 }

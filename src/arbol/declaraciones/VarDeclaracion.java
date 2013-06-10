@@ -4,8 +4,10 @@
  */
 package arbol.declaraciones;
 
+import Generacion.TablaIds;
 import arbol.tipos.Tipo;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import semantica.InfSemantica;
@@ -34,9 +36,10 @@ public class VarDeclaracion extends Declaracion{
 
     @Override
     public void validarSemantica() {
+        Collections.reverse(nombre);
         for(int i=0;i<nombre.size();i++)
         {
-            if(InfSemantica.getInstancia().tablaGlobal.containsKey(nombre.get(i)))
+            if(InfSemantica.getInstancia().tablaGlobal.containsKey(nombre.get(i))&& TablaIds.getInstancia().getVariableNumber(nombre.get(i))==-1)
             {
                 try {
                     throw new Exception("Error Semantico--- Ya existe una variable con ese nombre");
@@ -46,6 +49,7 @@ public class VarDeclaracion extends Declaracion{
             }
             else{
                 InfSemantica.getInstancia().tablaGlobal.put(nombre.get(i), tipo);
+                TablaIds.getInstancia().addVariable(nombre.get(i),tipo.toString());
             }
         }
     }

@@ -20,14 +20,26 @@ public abstract class Sentencia {
     }
      public abstract void validarSemantica();
 
-        public void SentValSemantica()
+     public void SentValSemantica()
+     {
+         validarSemantica();
+         if (siguiente != null)
+         {
+            siguiente.SentValSemantica();
+         }            
+     }
+     
+     public abstract String generarCodigoSentencia();
+    
+    public String generarCodigo()
+    {
+        String valor=this.generarCodigoSentencia();
+        if(siguiente!= null)
         {
-            validarSemantica();
-            if (siguiente != null)
-            {
-                siguiente.SentValSemantica();
-            }            
+            valor+=siguiente.generarCodigo();
         }
+        return valor;
+    }
     
     
 }

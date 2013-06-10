@@ -4,6 +4,7 @@
  */
 package arbol.expresiones;
 
+import Generacion.Info;
 import arbol.tipos.Tipo;
 import arbol.tipos.TipoBooleano;
 import arbol.tipos.TipoFloat;
@@ -37,4 +38,9 @@ public class ExpreLessEqual extends ExpreOperadorBinario{
         }
      }
     
+    @Override
+    public String generarCodigo() {  
+        
+         return izquierdo.generarCodigo()+derecho.generarCodigo()+ "bgt ";
+    } 
 }

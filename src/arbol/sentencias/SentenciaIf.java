@@ -4,6 +4,7 @@
  */
 package arbol.sentencias;
 
+import Generacion.Info;
 import arbol.expresiones.Expresion;
 import arbol.tipos.Tipo;
 import arbol.tipos.TipoBooleano;
@@ -81,6 +82,20 @@ public class SentenciaIf extends Sentencia{
                 Logger.getLogger(SentenciaWhile.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    @Override
+    public String generarCodigoSentencia() {
+         String etiqueta1 = Info.getIntancia().getEtiqueta("If");
+         String etiqueta2 = Info.getIntancia().getEtiqueta("EndIf");
+         
+         String cVerdadero = this.condicion.generarCodigo();
+         String cFalso = conElse!=null ? this.conElse.generarCodigo(): "";
+         String etiqueta3=conElse!=null ? Info.getIntancia().getEtiqueta("Else"):"";
+         String etiqueta4=conElse!=null ? Info.getIntancia().getEtiqueta("Else"):"";
+         
+         return expr1.generarCodigo()+ etiqueta3+"\n"+etiqueta1+": \n"+cVerdadero+ "br "+ etiqueta2+
+                 "\n"+etiqueta3+ ":\n"+cFalso + "br "+etiqueta4+"\n"+ etiqueta2+ ":\n"+ etiqueta4+ ":\n";
     }
     
 }

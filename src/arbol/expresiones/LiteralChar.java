@@ -30,4 +30,18 @@ public class LiteralChar extends Expresion{
         return InfSemantica.getInstancia().tablaTipos.get("char");
     }
     
+    @Override
+    public String generarCodigo() {
+        char[] c;
+        c= new char[0];
+        c[1]=this.valor;
+        String charvalue= new String(c);       
+        return "ldc.i4.s " +charvalue.format("%1$04x", ('c' & 0xFFFF))+"\n";
+                
+    }
+    
+      @Override
+    public String toString(){
+        return "char";
+    }
 }

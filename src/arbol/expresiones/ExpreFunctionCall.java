@@ -40,6 +40,11 @@ public class ExpreFunctionCall extends Expresion{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    public String generarCodigo() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 
     
 }

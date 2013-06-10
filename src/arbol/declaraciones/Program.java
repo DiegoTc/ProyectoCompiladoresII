@@ -36,4 +36,9 @@ public class Program {
         }
     }
     
+    public String GenerarCodigo()
+    {
+        return compound.s1.generarCodigo();
+    }
+    
 }   

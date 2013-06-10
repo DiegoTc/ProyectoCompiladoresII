@@ -16,6 +16,6 @@ public class TipoChar extends Tipo{
      
     @Override
     public String toString(){
-        return "Char";
+        return "char";
     } 
 }

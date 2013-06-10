@@ -44,6 +44,11 @@ public class ExpreParam extends Expresion{
     public Tipo validarSemantica() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public String generarCodigo() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
     
 }

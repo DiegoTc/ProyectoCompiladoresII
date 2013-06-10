@@ -4,6 +4,7 @@
  */
 package arbol.sentencias;
 
+import Generacion.Info;
 import arbol.expresiones.Expresion;
 import arbol.tipos.Tipo;
 import arbol.tipos.TipoBooleano;
@@ -61,6 +62,13 @@ public class SentenciaRepeat extends Sentencia{
                 Logger.getLogger(SentenciaWhile.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    @Override
+    public String generarCodigoSentencia() {
+        String etiqueta1=Info.getIntancia().getEtiqueta("Repeat");
+        String etiqueta2=Info.getIntancia().getEtiqueta("FinRepeat");
+        return etiqueta1+": \n"+bloque.generarCodigo()+condicion.generarCodigo()+etiqueta1+"\n"+etiqueta2+":\n";
     }
     
     

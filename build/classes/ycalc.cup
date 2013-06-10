@@ -93,7 +93,7 @@ non terminal Declaracion decl_param;
 non terminal Declaracion decl_list;
 non terminal Expresion params;
 non terminal Expresion param;
-non terminal ArrayList<String> ids;
+non terminal IDs ids;
 non terminal Expresion expr_list;
 non terminal Sentencia function_call;
 non terminal Expresion function_callexpr;
@@ -175,28 +175,28 @@ params    ::= params:p1li SEMICOLON param:p1 {: p1li.siguiente=p1; RESULT=p1li; 
               ; 
 
 param     ::= REF VAR ids:id1 COLON type:t1
-                       {: ConvertToExpreList list= new ConvertToExpreList(id1);
+                       {: ConvertToExpreList list= new ConvertToExpreList(id1.lista);
                           ExpreList elist=list.getLista();
                           RESULT=new ExpreParam(elist,t1);
                       :}
               |
               VAR ids:id1 COLON type:t1
-                       {: ConvertToExpreList list= new ConvertToExpreList(id1);
+                       {: ConvertToExpreList list= new ConvertToExpreList(id1.lista);
                           ExpreList elist=list.getLista();
                           RESULT=new ExpreParam(elist,t1);
                       :}
               |
-              ids:id1 {: ConvertToExpreList list= new ConvertToExpreList(id1);
+              ids:id1 {: ConvertToExpreList list= new ConvertToExpreList(id1.lista);
                          ExpreList elist=list.getLista();
                          RESULT=new ExpreParam(elist);
                       :}
               ;
 
 ids       ::= ID:id1 SEMI ids:id2 
-                {:ArrayList<String> list= new ArrayList<String>(); 
-                 list.add(id1);list.add(id2.get(0)); RESULT= list; :}
+                {:id2.lista.add(id1); 
+                 RESULT= id2; :}
               |
-              ID:id1 {:ArrayList<String> list= new ArrayList<String>(); list.add(id1); RESULT= list; :}
+              ID:id1 {: IDs id=new IDs(); id.nombre=id1;id.lista.add(id1);RESULT= id; :}
               ;
 
 stms      ::= statement:st1 stms:sm1  {:st1.setSiguiente(sm1); RESULT= st1; :}   
@@ -355,7 +355,7 @@ type          ::= ARRAY LBRACKET expr_list:e1 RBRACKET OF type:t1 {: RESULT= new
               VOID {: RESULT= new TipoVoid(); :}
               ;
 
-decl_param    ::= ids:id1 COLON type:t1 SEMICOLON {:RESULT= new VarDeclaracion(id1,t1); :}
+decl_param    ::= ids:id1 COLON type:t1 SEMICOLON {:RESULT= new VarDeclaracion(id1.lista,t1); :}
               ;
 
 decl_list     ::= 

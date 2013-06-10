@@ -4,6 +4,7 @@
  */
 package arbol.expresiones;
 
+import Generacion.TablaIds;
 import arbol.tipos.Tipo;
 import semantica.InfSemantica;
 
@@ -45,5 +46,10 @@ public class ExpreVariables extends Expresion{
             tip=InfSemantica.getInstancia().tablaGlobal.get(name);
         }
         return tip;
+    }
+    
+    @Override
+    public String generarCodigo() {
+        return "ldloc " +TablaIds.getInstancia().getVariableNumber(name) +"\n";
     }
 }

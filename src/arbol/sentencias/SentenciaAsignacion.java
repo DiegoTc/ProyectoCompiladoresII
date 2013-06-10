@@ -4,6 +4,7 @@
  */
 package arbol.sentencias;
 
+import Generacion.TablaIds;
 import arbol.expresiones.ExpreVariables;
 import arbol.expresiones.Expresion;
 import arbol.tipos.Tipo;
@@ -77,6 +78,12 @@ public class SentenciaAsignacion extends Sentencia{
             /* Falta hacer las validaciones para arrays y records */
         }
        
+    }
+
+    @Override
+    public String generarCodigoSentencia() {
+        ExpreVariables tmp=((ExpreVariables)id);
+        return valor.generarCodigo() + "stloc "+ TablaIds.getInstancia().getVariableNumber(tmp.getName())+ "\n";
     }
     
     

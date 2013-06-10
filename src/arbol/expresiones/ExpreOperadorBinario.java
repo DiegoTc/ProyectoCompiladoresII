@@ -41,4 +41,8 @@ public abstract class ExpreOperadorBinario  extends Expresion{
         der=derecho.validarSemantica();
         return izq;
     }
+    @Override
+    public String generarCodigo() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

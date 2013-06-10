@@ -4,6 +4,7 @@
  */
 package arbol.expresiones;
 
+import Generacion.Info;
 import arbol.tipos.Tipo;
 import arbol.tipos.TipoBooleano;
 import arbol.tipos.TipoFloat;
@@ -36,5 +37,9 @@ public class ExpreGreaterThan extends ExpreOperadorBinario {
                 throw new Exception("Error Semantico no se puede comparar un Tipo Int o Float con un Tipo "+ der.toString());
         }
      }
-    
+     @Override
+    public String generarCodigo() {  
+         
+         return izquierdo.generarCodigo()+derecho.generarCodigo()+ "ble ";
+    } 
 }

@@ -4,6 +4,7 @@
  */
 package arbol.expresiones;
 
+import Generacion.Info;
 import arbol.tipos.Tipo;
 import arbol.tipos.TipoBooleano;
 
@@ -30,4 +31,10 @@ public class ExpreEqual extends ExpreOperadorBinario{
                 throw new Exception("Error Semantico no se puede comparar Tipo "+ izq.toString()+ " con Tipo "+ der.toString());
         }
      }
+      
+    @Override
+    public String generarCodigo() {  
+         String etiqueta1 = Info.getIntancia().getEtiqueta("Not Equal");
+         return izquierdo.generarCodigo()+derecho.generarCodigo()+"bne.un "+etiqueta1+ "\n";
+    } 
 }

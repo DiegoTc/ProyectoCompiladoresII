@@ -15,6 +15,6 @@ public class TipoVoid extends Tipo{
     }
      @Override
     public String toString(){
-        return "String";
+        return "void";
     }
 }

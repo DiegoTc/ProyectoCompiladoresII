@@ -15,6 +15,6 @@ public class TipoBooleano extends Tipo{
     }
      @Override
     public String toString(){
-        return "Booleano";
+        return "bool";
     }
 }

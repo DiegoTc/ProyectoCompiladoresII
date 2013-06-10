@@ -30,5 +30,15 @@ public class LiteralEntero extends Expresion{
         return InfSemantica.getInstancia().tablaTipos.get("int");
     }
     
+    @Override
+    public String generarCodigo() {
+        return "ldc.i4 " +this.valor+"\n";
+                
+    }
+    
+      @Override
+    public String toString(){
+        return "int32";
+    }
     
 }

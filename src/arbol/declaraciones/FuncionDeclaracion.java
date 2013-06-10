@@ -4,6 +4,7 @@
  */
 package arbol.declaraciones;
 
+import Generacion.TablaIds;
 import arbol.expresiones.Expresion;
 import arbol.sentencias.Sentencia;
 import arbol.tipos.Tipo;
@@ -74,7 +75,8 @@ public class FuncionDeclaracion extends Declaracion{
 
     @Override
     public void validarSemantica() {
-       if(InfSemantica.getInstancia().tablaFunciones.containsKey(nombre)&&InfSemantica.getInstancia().tablaGlobal.containsKey(nombre))
+       if(InfSemantica.getInstancia().tablaFunciones.containsKey(nombre)&&InfSemantica.getInstancia().tablaGlobal.containsKey(nombre)
+          &&TablaIds.getInstancia().getVariableNumber(nombre)==-1          )
        {
             try {
                 throw new Exception("Error Semantico--- Ya existe una variable con ese nombre");
@@ -86,6 +88,7 @@ public class FuncionDeclaracion extends Declaracion{
        {
            InfSemantica.getInstancia().tablaGlobal.put(nombre, tipo);
            InfSemantica.getInstancia().tablaFunciones.put(nombre, new FuncionDeclaracion(nombre, tipo, expr, compound));
+           TablaIds.getInstancia().addVariable(nombre,tipo.toString());
        }
     }
     

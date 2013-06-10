@@ -30,5 +30,20 @@ public class LiteralBooleana extends Expresion{
     public Tipo validarSemantica() {
         return InfSemantica.getInstancia().tablaTipos.get("Boolean");
     }
+     @Override
+    public String generarCodigo() {
+         String value="";
+         if(this.valor){
+             value="1";
+         }else{
+             value="0";
+         }
+        return "ldc.i4 " +value+"\n";
+                
+    }
     
+       @Override
+    public String toString(){
+        return "bool";
+    }
 }

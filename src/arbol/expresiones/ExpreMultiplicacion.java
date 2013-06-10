@@ -43,5 +43,10 @@ public class ExpreMultiplicacion extends ExpreOperadorBinario {
             throw new Exception("Error Semantico no se puede multiplicar Tipo "+ izq.toString()+ " con Tipo "+ der.toString());
         }
      }
+     
+    @Override
+    public String generarCodigo() {
+         return izquierdo.generarCodigo()+derecho.generarCodigo()+"mul\n";
+    }
     
 }

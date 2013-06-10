@@ -15,6 +15,6 @@ public class TipoFloat extends Tipo{
     }
      @Override
     public String toString(){
-        return "Float";
+        return "float32";
     }
 }

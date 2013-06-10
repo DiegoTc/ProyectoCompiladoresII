@@ -4,6 +4,8 @@
  */
 package arbol.sentencias;
 
+import Generacion.Info;
+import Generacion.TablaIds;
 import arbol.expresiones.Expresion;
 import arbol.tipos.Tipo;
 import arbol.tipos.TipoBooleano;
@@ -103,6 +105,27 @@ public class SentenciaFor extends Sentencia{
             }
         }
             
+    }
+
+    @Override
+    public String generarCodigoSentencia() {
+        String etiqueta1=Info.getIntancia().getEtiqueta("INICIOFOR");
+        String etiqueta2=Info.getIntancia().getEtiqueta("FINFOR");
+        String etiqueta3=Info.getIntancia().getEtiqueta("CONDICION");
+        String asignacion, cond, incrementar;
+        
+        asignacion=condicion.generarCodigo()+"stloc."+
+                   TablaIds.getInstancia().getVariableNumber(id)+ "\n"+ "br "+ etiqueta3+ "\n";
+        
+        cond = etiqueta1+":\n"+compound.generarCodigo();
+        
+        incrementar = "ldloc."+TablaIds.getInstancia().getVariableNumber(id)+
+                        "\nldc.i4 1\nadd\n"+"stloc."+
+                        TablaIds.getInstancia().getVariableNumber(id)+"\n";
+        
+        return asignacion+cond+incrementar+etiqueta3+": ldloc."+
+               TablaIds.getInstancia().getVariableNumber(id)+ "\n"+condicion2.generarCodigo() +
+                "blt "+etiqueta1+"\n"+etiqueta2+":\n";
     }
     
 

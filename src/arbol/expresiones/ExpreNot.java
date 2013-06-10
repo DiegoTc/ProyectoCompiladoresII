@@ -4,6 +4,8 @@
  */
 package arbol.expresiones;
 
+import Generacion.Info;
+
 /**
  *
  * @author diego
@@ -22,5 +24,9 @@ public class ExpreNot extends ExpreOperacionUnaria{
     public ExpreNot(Expresion expr1) {
         this.expr1 = expr1;
     }
-    
+    @Override
+    public String generarCodigo() {  
+        String etiqueta1 = Info.getIntancia().getEtiqueta("Not");
+        return expr1.generarCodigo()+ " brtrue "+etiqueta1;
+    } 
 }
