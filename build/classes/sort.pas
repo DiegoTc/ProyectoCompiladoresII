@@ -1,18 +1,17 @@
 program Sort(input, output);
+
+type
+    TBookRec = record
+                ISBN  : string;
+                Price : int;
+               end;
+
+  
 var    
-    i,j : int;
+    struct : TBookRec;
                      
 begin
-   writeln('** IF/ELSE **');
-   i:= 0;
-   j:= 10;
-   if(i>j) then
-   begin
-        writeln('** IF **');
-   end
-   else
-    begin
-        writeln('** ELSE **');
-    end
+   struct.Price:= 100;
+   
    
 end.

@@ -5,6 +5,7 @@
 package arbol.tipos;
 
 import arbol.declaraciones.Declaracion;
+import semantica.TablaSimbolos;
 
 /**
  *
@@ -12,9 +13,10 @@ import arbol.declaraciones.Declaracion;
  */
 public class TipoRecord extends Tipo{
     Declaracion decl;
-
+    public TablaSimbolos tbsimbolo;
     public TipoRecord(Declaracion decl) {
         this.decl = decl;
+        tbsimbolo= new TablaSimbolos();
     }
      @Override
     public Boolean esEquivalente(Tipo t) {
@@ -24,4 +26,9 @@ public class TipoRecord extends Tipo{
     public String toString(){
         return "Record";
     }
+
+    public Declaracion getDecl() {
+        return decl;
+    }
+     
 }

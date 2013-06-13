@@ -4,8 +4,11 @@
  */
 package Generacion;
 
+import arbol.tipos.Tipo;
+import arbol.tipos.TipoRecord;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import semantica.InfSemantica;
 
 /**
  *
@@ -48,21 +51,44 @@ public class TablaIds {
          return -1;
      }
      
-      public String getLocals()
+     public String getVariables()
      {
-         StringBuilder local=new StringBuilder(".assembly extern mscorlib {}\n");
-         local.append(".assembly Test{\n"+"\t.ver 1:0:1:0"+"\n}\n"+".module test.exe\n");
-         local.append(".method static public void main() il managed { \n" +".entrypoint \n" +" .maxstack 100\n" + ".locals init (");
-         for(int i=0;i<lista.size();i++)
+         StringBuilder local=new StringBuilder();
+          local.append(".method static public void main() il managed { \n" +".entrypoint \n" +" .maxstack 100\n" + ".locals init (");
+          Tipo t=null;
+          TipoRecord trecord=null;
+          for(int i=0;i<lista.size();i++)
          {
+             if(InfSemantica.getInstancia().tablaGlobal.containsKey(lista.get(i)))
+             {
+                 t= InfSemantica.getInstancia().tablaGlobal.get(lista.get(i));
+                 if(t instanceof TipoRecord){
+                    trecord=((TipoRecord)t);
+                    local.append("class Test.").append(lista.get(i)).append("\t").append(lista.get(i));
+                    if(i<lista.size()-1)
+                    {
+                        local.append(",");
+                    }
+                 }
+             }
+             else{
              local.append(tipos.get(i));
-             local.append(" "+lista.get(i));
+             local.append(" ").append(lista.get(i));
              if(i<lista.size()-1)
              {
                  local.append(",");
              }
+             }
          }
-         local.append(")");
+         local.append(")\n");
+         return local.toString();
+     }
+     
+     
+      public String getLocals()
+     {
+         StringBuilder local=new StringBuilder(".assembly extern mscorlib {}\n");
+         local.append(".assembly Test{\n"+"\t.ver 1:0:1:0"+"\n}\n"+".module test.exe\n");
          return local.toString();
      }
       

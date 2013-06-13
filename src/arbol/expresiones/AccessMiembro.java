@@ -4,12 +4,15 @@
  */
 package arbol.expresiones;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author diego
  */
 public class AccessMiembro extends Access{
     private String id;
+   
 
     public AccessMiembro(String id) {
         this.id = id;

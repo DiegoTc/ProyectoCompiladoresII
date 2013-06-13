@@ -4,10 +4,13 @@
  */
 package arbol.expresiones;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author diego
  */
 public abstract class Access {
     public Access next;
+    
 }

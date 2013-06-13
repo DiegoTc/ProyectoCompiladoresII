@@ -153,10 +153,11 @@ function  ::= FUNCTION ID:id1 parameter:p1 COLON type:t1 SEMICOLON compound:c1 S
                 {: RESULT= new FuncionDeclaracion(id1,t1,p1,c1); :}
               ;
  
-type_list ::= type_list:tb2 type_body:tlist 
+type_list ::= type_body:tb2 type_list:tlist  
                 {:
-                    tlist.setSiguiente(tb2);
-                    RESULT=tlist;
+                    
+                    tb2.setSiguiente(tlist);
+                    RESULT=tb2;
                 :} 
               |
               type_body:tb1 {: RESULT= tb1; :}
@@ -317,10 +318,10 @@ variable      ::= ID:id accesor_list:list {:
               ;
 
 accesor_list ::= 
-              DOT ID:id accesor_list:aclist  {: AccessMiembro miembro= new AccessMiembro(id); 
-                                                AccessLista lista= new AccessLista();
-                                                lista.lista.add(miembro);
-                                                RESULT=lista;
+              DOT ID:id accesor_list:aclist  {:
+                                                AccessMiembro miembro= new AccessMiembro(id);
+                                                miembro.next=aclist;
+                                                RESULT=miembro;  
                                              :}
               |
               LBRACKET expr_list:elist RBRACKET accesor_list:alist
@@ -350,7 +351,7 @@ type          ::= ARRAY LBRACKET expr_list:e1 RBRACKET OF type:t1 {: RESULT= new
               |
               BOOL {: RESULT= new TipoBooleano(); :}
               |
-              ID   {: RESULT= new TipoId(); :}
+              ID:i1   {: RESULT= new TipoId(i1); :}
               |
               VOID {: RESULT= new TipoVoid(); :}
               ;

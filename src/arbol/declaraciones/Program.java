@@ -4,6 +4,7 @@
  */
 package arbol.declaraciones;
 
+import Generacion.TablaIds;
 import arbol.sentencias.Sentencia;
 
 
@@ -38,7 +39,12 @@ public class Program {
     
     public String GenerarCodigo()
     {
-        return compound.s1.generarCodigo();
+        if(compound.d1 instanceof DeclaracionSecuencia){
+            DeclaracionSecuencia tmp= ((DeclaracionSecuencia)compound.d1);
+            String classes=tmp.getRecords();
+            return classes+ TablaIds.getInstancia().getVariables()+compound.s1.generarCodigo();
+        }
+        return TablaIds.getInstancia().getVariables()+ compound.s1.generarCodigo();
     }
     
 }   

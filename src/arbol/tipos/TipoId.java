@@ -15,6 +15,24 @@ public class TipoId extends Tipo{
     public Boolean esEquivalente(Tipo t) {
         return t instanceof TipoId;
     }
+    String nombre;
+
+    public TipoId(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    @Override
+    public String toString()
+    {
+        return nombre;
+    }
     
     
 }

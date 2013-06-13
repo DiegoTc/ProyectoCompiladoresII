@@ -241,3 +241,44 @@ begin
       end
    end
 end.
+
+/*** EJEMPLO ***/
+
+program Sort(input, output);
+
+type
+    TBookRec = record
+                ISBN  : string;
+                Price : int;
+               end;
+
+    TBookRec1 = record
+                ISBN  : string;
+                Price : int;
+                TMP   : TBookRec;
+               end;
+
+    TBookRec2 = record
+                ISBN  : string;
+                Price : int;
+                TMP   : TBookRec1;
+               end;
+var    
+    i,j : int;
+    struct : TBookRec2;
+                     
+begin
+   writeln('** IF/ELSE **');
+   struct.TMP.TMP.ISBN:= 100;
+   i:= 0;
+   j:= 10;
+   if(i>j) then
+   begin
+        writeln('** IF **');
+   end
+   else
+    begin
+        writeln('** ELSE **');
+    end
+   
+end.

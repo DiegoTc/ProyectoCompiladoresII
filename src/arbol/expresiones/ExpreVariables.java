@@ -6,6 +6,7 @@ package arbol.expresiones;
 
 import Generacion.TablaIds;
 import arbol.tipos.Tipo;
+import java.util.ArrayList;
 import semantica.InfSemantica;
 
 /**
@@ -14,23 +15,25 @@ import semantica.InfSemantica;
  */
 public class ExpreVariables extends Expresion{
     String name;
-    Access access;
-
+    ;
+    public ArrayList<Access> lista= new ArrayList<>();
     
-
-    public Access getAccess() {
-        return access;
+    private void converttoList(Access access){
+        Access tmp= access;
+        while(tmp!=null){
+            lista.add(tmp);
+            tmp=tmp.next;
+        }
     }
+
+   
 
     public ExpreVariables(String name, Access access) {
         this.name = name;
-        this.access = access;
+        converttoList(access); 
     }
 
-    public void setAccess(Access access) {
-        this.access = access;
-    }
-
+   
     public String getName() {
         return name;
     }

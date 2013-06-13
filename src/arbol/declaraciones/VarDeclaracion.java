@@ -6,6 +6,7 @@ package arbol.declaraciones;
 
 import Generacion.TablaIds;
 import arbol.tipos.Tipo;
+import arbol.tipos.TipoId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
@@ -48,8 +49,20 @@ public class VarDeclaracion extends Declaracion{
                 }
             }
             else{
-                InfSemantica.getInstancia().tablaGlobal.put(nombre.get(i), tipo);
-                TablaIds.getInstancia().addVariable(nombre.get(i),tipo.toString());
+                if(tipo instanceof TipoId)
+                {
+                    TipoId tid=((TipoId)tipo);
+                    if(InfSemantica.getInstancia().tablaGlobal.containsKey(tid.getNombre())){
+                        Tipo t=InfSemantica.getInstancia().tablaGlobal.get(tid.getNombre());
+                        InfSemantica.getInstancia().tablaGlobal.put(nombre.get(i), t);
+                        TablaIds.getInstancia().addVariable(nombre.get(i),t.toString());
+                    }
+                }
+                else
+                {
+                    InfSemantica.getInstancia().tablaGlobal.put(nombre.get(i), tipo);
+                    TablaIds.getInstancia().addVariable(nombre.get(i),tipo.toString());
+                }
             }
         }
     }

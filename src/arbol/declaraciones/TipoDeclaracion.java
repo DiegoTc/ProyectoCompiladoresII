@@ -6,6 +6,8 @@ package arbol.declaraciones;
 
 import Generacion.TablaIds;
 import arbol.tipos.Tipo;
+import arbol.tipos.TipoId;
+import arbol.tipos.TipoRecord;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import semantica.InfSemantica;
@@ -48,8 +50,54 @@ public class TipoDeclaracion extends Declaracion{
         }
         else
         {
-            InfSemantica.getInstancia().tablaGlobal.put(nombre, tipo);
-            TablaIds.getInstancia().addVariable(nombre,tipo.toString());
+            
+            if(tipo instanceof TipoRecord)
+            {
+                TipoRecord tmp= ((TipoRecord)tipo);
+                Declaracion tmp1=tmp.getDecl();
+                VarDeclaracion var=null;
+                
+                String name=null;
+                Tipo tip=null;
+                while(tmp1 instanceof VarDeclaracion)
+                {
+                    var=((VarDeclaracion)tmp1);
+                    for(int i=0;i< var.nombre.size();i++)
+                    {
+                        try {
+                            name=var.nombre.get(i);
+                            tip=var.getTipo();
+                            if(tip instanceof TipoId)
+                            {
+                                TipoId tid= ((TipoId)tip);
+                                if(InfSemantica.getInstancia().tablaGlobal.containsKey(tid.getNombre()))
+                                {
+                                    Tipo t= InfSemantica.getInstancia().tablaGlobal.get(tid.getNombre());
+                                     tmp.tbsimbolo.addVariable(name, t);
+                                }
+                                else{
+                                    throw new Exception("Error Semantico -- El tipo "+ name+ " no a sido declarado");
+                                }
+                            }
+                            else{
+                                tmp.tbsimbolo.addVariable(name, tip);
+                            }
+                        } catch (Exception ex) {
+                            Logger.getLogger(TipoDeclaracion.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    tmp1=tmp1.getSiguiente();   
+                }
+                InfSemantica.getInstancia().tablaGlobal.put(nombre, tmp);
+               // TablaIds.getInstancia().addVariable(nombre, tmp.toString());
+            }
+            else
+            {
+                InfSemantica.getInstancia().tablaGlobal.put(nombre, tipo);
+                TablaIds.getInstancia().addVariable(nombre,tipo.toString());
+            }
         }
     }
+    
+  
 }

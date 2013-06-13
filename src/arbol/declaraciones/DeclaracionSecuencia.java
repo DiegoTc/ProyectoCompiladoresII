@@ -4,6 +4,10 @@
  */
 package arbol.declaraciones;
 
+import arbol.tipos.Tipo;
+import arbol.tipos.TipoRecord;
+import semantica.InfSemantica;
+
 /**
  *
  * @author diego
@@ -104,6 +108,41 @@ public class DeclaracionSecuencia extends Declaracion{
                 }
             }
         }
+    }
+    
+      public String getRecords(){
+        StringBuilder resultado= new StringBuilder();
+        if(tipo!=null){
+        resultado.append(".namespace Test{\n ");
+        Declaracion tmp= tipo;
+        TipoDeclaracion tdecl=null;
+        while(tmp!=null)
+        {
+            if(tmp instanceof TipoDeclaracion)
+            {
+                tdecl=((TipoDeclaracion)tmp);
+                resultado.append(".class public auto ansi beforefieldinit ").append(tdecl.getNombre());
+                resultado.append(" extends [mscorlib]System.Object{\n");
+                Tipo t= InfSemantica.getInstancia().tablaGlobal.get(tdecl.getNombre());
+                TipoRecord record= ((TipoRecord)t);
+                for(int i=0;i<record.tbsimbolo.lista.size();i++)
+                {
+                    resultado.append(".field  public\t").append(record.tbsimbolo.tipos.get(i).toString()).append(" ").append(record.tbsimbolo.lista.get(i)).append("\n");
+                }
+                resultado.append(".method public hidebysig specialname rtspecialname instance default void '.ctor' ()  cil managed\n {");
+                resultado.append(".maxstack 8\n");
+                resultado.append("ldarg.0\n");
+                resultado.append("call instance void object::'.ctor'()");
+                resultado.append("ret\n }\n}");
+            }
+            tmp=tmp.getSiguiente();
+        }
+        resultado.append("\n}");
+        }
+        else{
+            resultado.append("");
+        }
+        return resultado.toString();
     }
     
 }
