@@ -14,6 +14,7 @@ import semantica.TablaSimbolos;
 public class TipoRecord extends Tipo{
     Declaracion decl;
     public TablaSimbolos tbsimbolo;
+    public String nombre;
     public TipoRecord(Declaracion decl) {
         this.decl = decl;
         tbsimbolo= new TablaSimbolos();

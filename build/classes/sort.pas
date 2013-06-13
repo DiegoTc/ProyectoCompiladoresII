@@ -12,6 +12,6 @@ var
                      
 begin
    struct.Price:= 100;
-   
+   writeln(struct.Price);
    
 end.

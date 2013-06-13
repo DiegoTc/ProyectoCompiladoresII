@@ -6,6 +6,8 @@ package arbol.expresiones;
 
 import Generacion.TablaIds;
 import arbol.tipos.Tipo;
+import arbol.tipos.TipoInt;
+import arbol.tipos.TipoRecord;
 import java.util.ArrayList;
 import semantica.InfSemantica;
 
@@ -53,6 +55,36 @@ public class ExpreVariables extends Expresion{
     
     @Override
     public String generarCodigo() {
-        return "ldloc " +TablaIds.getInstancia().getVariableNumber(name) +"\n";
+        Tipo t=InfSemantica.getInstancia().tablaGlobal.get(name);
+        TipoRecord trecord=null;
+        StringBuilder builder= new StringBuilder();
+        int id;
+        if(t instanceof TipoRecord)
+        {
+            trecord=((TipoRecord)t);   
+        }
+        Access ac=null;
+        AccessMiembro acm=null;
+        if(lista.size()>0){
+            Tipo tipo=null;
+            for(int i=0;i<lista.size();i++)
+            {
+                id=TablaIds.getInstancia().getVariableNumber(name);
+                builder.append("ldloca.s ").append(id).append("\n");
+                ac=lista.get(i);
+                if(ac instanceof AccessMiembro){
+                    acm=((AccessMiembro)ac);
+                }
+                tipo=trecord.tbsimbolo.tablaLocal.get(acm.getId());
+                
+                if(tipo instanceof TipoInt){
+                    TipoInt tint=((TipoInt)tipo);
+                    builder.append("ldfld ").append(tint.toString()).append(" Ejemplo.").append(trecord.nombre).append("::").append(acm.getId()).append("\n");
+                }                
+            }
+            return builder.toString();
+        }else{
+            return "ldloc " +TablaIds.getInstancia().getVariableNumber(name) +"\n";
+        }
     }
 }

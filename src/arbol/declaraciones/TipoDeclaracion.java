@@ -59,6 +59,7 @@ public class TipoDeclaracion extends Declaracion{
                 
                 String name=null;
                 Tipo tip=null;
+                tmp.nombre=nombre;
                 while(tmp1 instanceof VarDeclaracion)
                 {
                     var=((VarDeclaracion)tmp1);
@@ -74,6 +75,7 @@ public class TipoDeclaracion extends Declaracion{
                                 {
                                     Tipo t= InfSemantica.getInstancia().tablaGlobal.get(tid.getNombre());
                                      tmp.tbsimbolo.addVariable(name, t);
+                                     
                                 }
                                 else{
                                     throw new Exception("Error Semantico -- El tipo "+ name+ " no a sido declarado");

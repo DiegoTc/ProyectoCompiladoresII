@@ -5,6 +5,8 @@
 package arbol.sentencias;
 
 import arbol.expresiones.*;
+import arbol.tipos.Tipo;
+import arbol.tipos.TipoRecord;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import semantica.InfSemantica;
@@ -72,8 +74,28 @@ public class SentenciaWrite extends Sentencia{
         else if(expre1 instanceof ExpreVariables)
         {
             ExpreVariables tmp= ((ExpreVariables)expre1);
+            Tipo t=null;
+            TipoRecord trecord=null;
             if(InfSemantica.getInstancia().tablaGlobal.containsKey(tmp.getName()))
             {
+                t=InfSemantica.getInstancia().tablaGlobal.get(tmp.getName());
+                if(t instanceof TipoRecord)
+                {
+                    trecord=((TipoRecord)t);
+                    StringBuilder builder=new StringBuilder();
+                    Access ac=null;
+                    AccessMiembro acm=null;
+                    for(int i=0;i<tmp.lista.size();i++)
+                    {
+                        ac=tmp.lista.get(i);
+                        if(ac instanceof AccessMiembro)
+                        {
+                            acm=((AccessMiembro)ac);
+                            builder.append(trecord.tbsimbolo.tablaLocal.get(acm.getId()).toString());
+                        }
+                    }
+                    return builder.toString();
+                }
                 return InfSemantica.getInstancia().tablaGlobal.get(tmp.getName()).toString();
             }
             else{

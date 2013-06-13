@@ -64,7 +64,8 @@ public class TablaIds {
                  t= InfSemantica.getInstancia().tablaGlobal.get(lista.get(i));
                  if(t instanceof TipoRecord){
                     trecord=((TipoRecord)t);
-                    local.append("class Test.").append(lista.get(i)).append("\t").append(lista.get(i));
+                    int id=TablaIds.getInstancia().getVariableNumber(lista.get(i));
+                    local.append("valuetype Ejemplo.").append(trecord.nombre).append("\t").append(lista.get(i)).append(id);
                     if(i<lista.size()-1)
                     {
                         local.append(",");

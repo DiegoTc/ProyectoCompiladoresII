@@ -113,31 +113,28 @@ public class DeclaracionSecuencia extends Declaracion{
       public String getRecords(){
         StringBuilder resultado= new StringBuilder();
         if(tipo!=null){
-        resultado.append(".namespace Test{\n ");
+        
         Declaracion tmp= tipo;
         TipoDeclaracion tdecl=null;
         while(tmp!=null)
         {
             if(tmp instanceof TipoDeclaracion)
             {
+                resultado.append(".namespace Ejemplo{\n");
                 tdecl=((TipoDeclaracion)tmp);
-                resultado.append(".class public auto ansi beforefieldinit ").append(tdecl.getNombre());
-                resultado.append(" extends [mscorlib]System.Object{\n");
+                resultado.append("\t.class private sequential ansi sealed beforefieldinit ").append(tdecl.getNombre());
+                resultado.append(" extends [mscorlib]System.ValueType{\n");
                 Tipo t= InfSemantica.getInstancia().tablaGlobal.get(tdecl.getNombre());
                 TipoRecord record= ((TipoRecord)t);
                 for(int i=0;i<record.tbsimbolo.lista.size();i++)
                 {
-                    resultado.append(".field  public\t").append(record.tbsimbolo.tipos.get(i).toString()).append(" ").append(record.tbsimbolo.lista.get(i)).append("\n");
+                    resultado.append("\t\t.field  public\t").append(record.tbsimbolo.tipos.get(i).toString()).append(" ").append(record.tbsimbolo.lista.get(i)).append("\n");
                 }
-                resultado.append(".method public hidebysig specialname rtspecialname instance default void '.ctor' ()  cil managed\n {");
-                resultado.append(".maxstack 8\n");
-                resultado.append("ldarg.0\n");
-                resultado.append("call instance void object::'.ctor'()");
-                resultado.append("ret\n }\n}");
+            resultado.append("\n\t}\n}\n");
             }
             tmp=tmp.getSiguiente();
         }
-        resultado.append("\n}");
+        
         }
         else{
             resultado.append("");

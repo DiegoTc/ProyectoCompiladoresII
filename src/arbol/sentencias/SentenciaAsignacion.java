@@ -11,6 +11,7 @@ import arbol.expresiones.ExpreVariables;
 import arbol.expresiones.Expresion;
 import arbol.tipos.Tipo;
 import arbol.tipos.TipoArray;
+import arbol.tipos.TipoInt;
 import arbol.tipos.TipoRecord;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -125,7 +126,42 @@ public class SentenciaAsignacion extends Sentencia{
     @Override
     public String generarCodigoSentencia() {
         ExpreVariables tmp=((ExpreVariables)id);
-        return valor.generarCodigo() + "stloc "+ TablaIds.getInstancia().getVariableNumber(tmp.getName())+ "\n";
+        Tipo tipo=null;
+        TipoRecord record=null;
+        if(InfSemantica.getInstancia().tablaGlobal.containsKey(tmp.getName())){
+            tipo=InfSemantica.getInstancia().tablaGlobal.get(tmp.getName());
+        }
+        if(tipo instanceof TipoRecord)
+        {
+            record=((TipoRecord)tipo);
+            int id=TablaIds.getInstancia().getVariableNumber(tmp.getName());
+            StringBuilder builder= new StringBuilder();
+            builder.append("ldloca.s ").append(id).append("\n");
+            AccessMiembro acm=null;
+            Tipo t=null;
+            for(int i=0;i<tmp.lista.size();i++)
+            {
+                Access ac=tmp.lista.get(i);
+                if(ac instanceof AccessMiembro){
+                    acm=((AccessMiembro)ac);
+                    t= record.tbsimbolo.tablaLocal.get(acm.getId());
+                }
+                if(record.tbsimbolo.tablaLocal.containsKey(acm.getId())){
+                    builder.append(valor.generarCodigo());
+                    if(t instanceof TipoInt)
+                    {
+                        TipoInt tint=((TipoInt)t);
+                        builder.append("stfld ").append(tint.toString()).append(" Ejemplo.").append(record.nombre).append("::").append(acm.getId()).append("\n");
+                        
+                    }
+                }
+            }
+            //builder.append(record.);
+            return builder.toString();
+        }
+        else{
+            return valor.generarCodigo() + "stloc "+ TablaIds.getInstancia().getVariableNumber(tmp.getName())+ "\n";
+        }
     }
     
     
