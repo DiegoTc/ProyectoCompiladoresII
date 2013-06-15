@@ -91,7 +91,13 @@ public class SentenciaWrite extends Sentencia{
                         if(ac instanceof AccessMiembro)
                         {
                             acm=((AccessMiembro)ac);
-                            builder.append(trecord.tbsimbolo.tablaLocal.get(acm.getId()).toString());
+                            if(trecord.tbsimbolo.tablaLocal.get(acm.getId()) instanceof TipoRecord){
+                                t=trecord.tbsimbolo.tablaLocal.get(acm.getId());
+                                trecord=((TipoRecord)t);
+                            }
+                            else{   
+                                builder.append(trecord.tbsimbolo.tablaLocal.get(acm.getId()).toString());
+                            }
                         }
                     }
                     return builder.toString();

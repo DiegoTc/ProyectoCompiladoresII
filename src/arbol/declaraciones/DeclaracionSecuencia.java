@@ -5,7 +5,9 @@
 package arbol.declaraciones;
 
 import arbol.tipos.Tipo;
+import arbol.tipos.TipoArray;
 import arbol.tipos.TipoRecord;
+import java.util.Collections;
 import semantica.InfSemantica;
 
 /**
@@ -116,6 +118,7 @@ public class DeclaracionSecuencia extends Declaracion{
         
         Declaracion tmp= tipo;
         TipoDeclaracion tdecl=null;
+        TipoRecord trec1=null;
         while(tmp!=null)
         {
             if(tmp instanceof TipoDeclaracion)
@@ -126,9 +129,20 @@ public class DeclaracionSecuencia extends Declaracion{
                 resultado.append(" extends [mscorlib]System.ValueType{\n");
                 Tipo t= InfSemantica.getInstancia().tablaGlobal.get(tdecl.getNombre());
                 TipoRecord record= ((TipoRecord)t);
+                Collections.reverse(record.tbsimbolo.lista);
+                Collections.reverse(record.tbsimbolo.tipos);
                 for(int i=0;i<record.tbsimbolo.lista.size();i++)
                 {
-                    resultado.append("\t\t.field  public\t").append(record.tbsimbolo.tipos.get(i).toString()).append(" ").append(record.tbsimbolo.lista.get(i)).append("\n");
+                    if(record.tbsimbolo.tipos.get(i) instanceof TipoRecord){
+                        trec1=((TipoRecord)record.tbsimbolo.tipos.get(i));
+                        resultado.append("\t\t.field  public\t").append("valuetype Ejemplo.").append(trec1.nombre).append(" ").append(record.tbsimbolo.lista.get(i)).append("\n");
+                    }
+                    else if(record.tbsimbolo.tipos.get(i) instanceof TipoArray){
+                        /* Falta las validaciones para los arreglos **/
+                    }
+                    else{
+                        resultado.append("\t\t.field  public\t").append(record.tbsimbolo.tipos.get(i).toString()).append(" ").append(record.tbsimbolo.lista.get(i)).append("\n");
+                    }
                 }
             resultado.append("\n\t}\n}\n");
             }

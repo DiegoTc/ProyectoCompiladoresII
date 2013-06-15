@@ -9,10 +9,7 @@ import arbol.expresiones.Access;
 import arbol.expresiones.AccessMiembro;
 import arbol.expresiones.ExpreVariables;
 import arbol.expresiones.Expresion;
-import arbol.tipos.Tipo;
-import arbol.tipos.TipoArray;
-import arbol.tipos.TipoInt;
-import arbol.tipos.TipoRecord;
+import arbol.tipos.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import semantica.InfSemantica;
@@ -48,78 +45,147 @@ public class SentenciaAsignacion extends Sentencia{
 
     @Override
     public void validarSemantica() {
-        Tipo var=null;
-        ExpreVariables tmp=null;
-        if(id instanceof ExpreVariables)
-        {
-            tmp=((ExpreVariables)id);
-            if(InfSemantica.getInstancia().tablaGlobal.containsKey(tmp.getName()))
-            {
-                var=InfSemantica.getInstancia().tablaGlobal.get(tmp.getName());
-            }
-            else{
-                try {
-                    throw new Exception("Error Semantico, la variable"+tmp.getName()+" no a sido declarada");
-                } catch (Exception ex) {
-                    Logger.getLogger(SentenciaAsignacion.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            Tipo izquierdo=id.validarSemantica();
+            Tipo derecho=valor.validarSemantica();
+            
+            if(!izquierdo.esEquivalente(derecho)){
+                    try {
+                        StringBuilder message=new StringBuilder("Error Semantico, el tipo ");
+                        message.append(izquierdo.toString());
+                        message.append(" no coincide con el valor asignado");
+                        throw new Exception(message.toString());
+                    } catch (Exception ex) {
+                        Logger.getLogger(SentenciaAsignacion.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-            }
-            Access a=null;
-            AccessMiembro miembro=null;
-            TipoRecord record=null;
-            for(int i=0;i<tmp.lista.size();i++)
+            
+        } catch (Exception ex) {
+            Logger.getLogger(SentenciaAsignacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            /*
+            if(id instanceof ExpreVariables)
             {
-                a=tmp.lista.get(i);
-                if(a instanceof AccessMiembro)
+                tmp=((ExpreVariables)id);
+                if(InfSemantica.getInstancia().tablaGlobal.containsKey(tmp.getName()))
                 {
-                    miembro=((AccessMiembro)a);
+                    var=InfSemantica.getInstancia().tablaGlobal.get(tmp.getName());
                 }
-                if(var instanceof TipoRecord)
+                else{
+                    try {
+                        throw new Exception("Error Semantico, la variable"+tmp.getName()+" no a sido declarada");
+                    } catch (Exception ex) {
+                        Logger.getLogger(SentenciaAsignacion.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                Access a=null;
+                AccessMiembro miembro=null;
+                TipoRecord record=null;
+                for(int i=0;i<tmp.lista.size();i++)
                 {
-                    record=((TipoRecord)var);
-                    if(record.tbsimbolo.tablaLocal.containsKey(miembro.getId()))
+                    a=tmp.lista.get(i);
+                    if(a instanceof AccessMiembro)
                     {
-                        var= record.tbsimbolo.tablaLocal.get(miembro.getId());
+                        miembro=((AccessMiembro)a);
+                    }
+                    if(var instanceof TipoRecord)
+                    {
+                        record=((TipoRecord)var);
+                        if(record.tbsimbolo.tablaLocal.containsKey(miembro.getId()))
+                        {
+                            var= record.tbsimbolo.tablaLocal.get(miembro.getId());
+                        }
+                        else{
+                            try {
+                                throw new Exception("Error semantico El tipo"+ miembro.getId() + " no fue declardo");
+                            } catch (Exception ex) {
+                                Logger.getLogger(SentenciaAsignacion.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                    else if(var instanceof TipoArray)
+                    {
+                        //FALTA PROGRAMAR LOS ARREGLOS  
+                    }
+                    else
+                    {
+                        
+                    }
+                }
+                
+                
+                //  La validacion semantica del valor
+                Tipo val=null;
+                if(valor instanceof ExpreVariables){
+                    tmp=((ExpreVariables)valor);
+                    if(InfSemantica.getInstancia().tablaGlobal.containsKey(tmp.getName()))
+                    {
+                        var1=InfSemantica.getInstancia().tablaGlobal.get(tmp.getName());
                     }
                     else{
                         try {
-                            throw new Exception("Error semantico El tipo"+ miembro.getId() + " no fue declardo");
+                            throw new Exception("Error Semantico, la variable"+tmp.getName()+" no a sido declarada");
                         } catch (Exception ex) {
                             Logger.getLogger(SentenciaAsignacion.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
-                }
-                else if(var instanceof TipoArray)
-                {
-                    /*FALTA PROGRAMAR LOS ARREGLOS  **/
-                }
-                else
-                {
                     
+                    for(int i=0;i<tmp.lista.size();i++)
+                    {
+                        a=tmp.lista.get(i);
+                        if(a instanceof AccessMiembro)
+                        {
+                            miembro=((AccessMiembro)a);
+                        }
+                        if(var1 instanceof TipoRecord)
+                        {
+                            record=((TipoRecord)var1);
+                            if(record.tbsimbolo.tablaLocal.containsKey(miembro.getId()))
+                            {
+                                var1= record.tbsimbolo.tablaLocal.get(miembro.getId());
+                            }
+                            else{
+                                try {
+                                    throw new Exception("Error semantico El tipo"+ miembro.getId() + " no fue declardo");
+                                } catch (Exception ex) {
+                                    Logger.getLogger(SentenciaAsignacion.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        }
+                        else if(var1 instanceof TipoArray)
+                        {
+                           
+                        }
+                        else
+                        {
+                            
+                        }
+                    }
+                    val=var1;
                 }
-            }
-            
-            
-            
-            Tipo val=null;
-            try {
-                val = valor.validarSemantica();
-            } catch (Exception ex) {
-                Logger.getLogger(SentenciaAsignacion.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if(!val.esEquivalente(var)){
-                try {
-                    StringBuilder message=new StringBuilder("Error Semantico, el tipo ");
-                    message.append(var.toString());
-                    message.append(" no coincide con el valor asignado");
-                    throw new Exception(message.toString());
-                } catch (Exception ex) {
-                    Logger.getLogger(SentenciaAsignacion.class.getName()).log(Level.SEVERE, null, ex);
+                else{
+                     
+                    try {
+                        val = valor.validarSemantica();
+                    } catch (Exception ex) {
+                        Logger.getLogger(SentenciaAsignacion.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-            }
-            
-           
-        }
+                
+                if(!val.esEquivalente(var)){
+                    try {
+                        StringBuilder message=new StringBuilder("Error Semantico, el tipo ");
+                        message.append(var.toString());
+                        message.append(" no coincide con el valor asignado");
+                        throw new Exception(message.toString());
+                    } catch (Exception ex) {
+                        Logger.getLogger(SentenciaAsignacion.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                
+               
+            }*/
+      
        
     }
 
@@ -134,6 +200,7 @@ public class SentenciaAsignacion extends Sentencia{
         if(tipo instanceof TipoRecord)
         {
             record=((TipoRecord)tipo);
+            String recordname=record.nombre;
             int id=TablaIds.getInstancia().getVariableNumber(tmp.getName());
             StringBuilder builder= new StringBuilder();
             builder.append("ldloca.s ").append(id).append("\n");
@@ -147,12 +214,41 @@ public class SentenciaAsignacion extends Sentencia{
                     t= record.tbsimbolo.tablaLocal.get(acm.getId());
                 }
                 if(record.tbsimbolo.tablaLocal.containsKey(acm.getId())){
-                    builder.append(valor.generarCodigo());
+                    
                     if(t instanceof TipoInt)
                     {
+                        builder.append(valor.generarCodigo());
                         TipoInt tint=((TipoInt)t);
-                        builder.append("stfld ").append(tint.toString()).append(" Ejemplo.").append(record.nombre).append("::").append(acm.getId()).append("\n");
+                        builder.append("stfld ").append(tint.toString()).append(" Ejemplo.").append(recordname).append("::").append(acm.getId()).append("\n");
                         
+                    }
+                    else if(t instanceof TipoFloat){
+                        builder.append(valor.generarCodigo());
+                        TipoFloat tfloat=((TipoFloat)t);
+                        builder.append("stfld ").append(tfloat.toString()).append(" Ejemplo.").append(recordname).append("::").append(acm.getId()).append("\n");
+                    }
+                    else if(t instanceof TipoString){
+                        builder.append(valor.generarCodigo());
+                        TipoString tstring=((TipoString)t);
+                        builder.append("stfld ").append(tstring.toString()).append(" Ejemplo.").append(recordname).append("::").append(acm.getId()).append("\n");
+                    }
+                    else if(t instanceof TipoBooleano){
+                        builder.append(valor.generarCodigo());
+                        TipoBooleano tbool=((TipoBooleano)t);
+                        builder.append("stfld ").append(tbool.toString()).append(" Ejemplo.").append(recordname).append("::").append(acm.getId()).append("\n");
+                    }
+                    else if(t instanceof TipoChar){
+                        builder.append(valor.generarCodigo());
+                        TipoChar tchar=((TipoChar)t);
+                        builder.append("stfld ").append(tchar.toString()).append(" Ejemplo.").append(recordname).append("::").append(acm.getId()).append("\n");
+                    }
+                    else if(t instanceof TipoRecord){
+                        record=((TipoRecord)t);
+                        String tmstring=recordname;
+                        recordname=record.nombre;
+                        builder.append("ldflda valuetype Ejemplo.").append(recordname).append(" Ejemplo.");
+                        
+                        builder.append(tmstring).append("::").append(acm.getId()).append("\n");
                     }
                 }
             }
