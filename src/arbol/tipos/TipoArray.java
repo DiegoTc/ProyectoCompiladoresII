@@ -5,6 +5,7 @@
 package arbol.tipos;
 
 import arbol.expresiones.Expresion;
+import java.util.ArrayList;
 
 /**
  *
@@ -13,12 +14,22 @@ import arbol.expresiones.Expresion;
 public class TipoArray extends Tipo{
     Expresion e;
     Tipo t;
-
+    public ArrayList<Expresion> sizearreglos;
     public TipoArray(Expresion e, Tipo t) {
         this.e = e;
         this.t = t;
+        sizearreglos=new ArrayList<>();
+        converttoList();
     }
 
+    public void converttoList(){
+        Expresion tmp=e;
+        while(tmp!=null){
+            sizearreglos.add(tmp);
+            tmp=tmp.siguiente;
+        }
+    }
+    
     public Tipo getT() {
         return t;
     }

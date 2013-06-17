@@ -12,9 +12,8 @@ public class AccessArreglo extends Access{
     public Expresion lista;
     public Access nombre;
 
-    public AccessArreglo(Expresion lista, Access nombre) {
+    public AccessArreglo(Expresion lista) {
         this.lista = lista;
-        this.nombre = nombre;
     }
 
     public Expresion getLista() {

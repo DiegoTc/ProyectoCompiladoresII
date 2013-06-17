@@ -6,6 +6,7 @@ package arbol.declaraciones;
 
 import Generacion.TablaIds;
 import arbol.tipos.Tipo;
+import arbol.tipos.TipoArray;
 import arbol.tipos.TipoId;
 import arbol.tipos.TipoRecord;
 import java.util.logging.Level;
@@ -79,6 +80,22 @@ public class TipoDeclaracion extends Declaracion{
                                 }
                                 else{
                                     throw new Exception("Error Semantico -- El tipo "+ name+ " no a sido declarado");
+                                }
+                            }
+                            else if(tip instanceof TipoArray){
+                                TipoArray tarrray= ((TipoArray)tip);
+                                if(tarrray.getT() instanceof TipoId){
+                                     TipoId tid= ((TipoId)tarrray.getT());
+                                    if(InfSemantica.getInstancia().tablaGlobal.containsKey(tid.getNombre()))
+                                    {
+                                        Tipo t= InfSemantica.getInstancia().tablaGlobal.get(tid.getNombre());
+                                        tarrray.setT(t);
+                                        tmp.tbsimbolo.addVariable(name, tarrray);
+                                     
+                                    }
+                                    else{
+                                        throw new Exception("Error Semantico -- El tipo "+ name+ " no a sido declarado");
+                                    }
                                 }
                             }
                             else{

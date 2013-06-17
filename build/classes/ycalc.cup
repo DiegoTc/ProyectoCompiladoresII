@@ -325,14 +325,15 @@ accesor_list ::=
                                              :}
               |
               LBRACKET expr_list:elist RBRACKET accesor_list:alist
-                                        {:  AccessArreglo arreglo= new AccessArreglo(elist,alist);
+                                        {:  AccessArreglo arreglo= new AccessArreglo(elist);
+                                            arreglo.next=alist;
                                             RESULT=arreglo;
                                             
                                         :}
               |
               ;
 
-expr_list     ::= expr_list:lista SEMI expr:e1 {: ExpreList list= new ExpreList(); list.lista.add(e1);  :} 
+expr_list     ::= expr_list:lista SEMI expr:e1 {: lista.siguiente=e1;RESULT=lista;  :} 
               | 
               expr:e1 {: RESULT=e1; :}
               ;

@@ -21,4 +21,8 @@ public class TipoInt extends Tipo{
     public String toString(){
         return "int32";
     }
+    
+    public String toString1(){
+        return "Int32";
+    }
 }

@@ -1,5 +1,6 @@
 program Sort(input, output);
 
+
 type
     TBookRec = record
                 ISBN  : string;
@@ -12,24 +13,12 @@ type
                 t1   : TBookRec;
                end;
 
-    TBookRec2 = record
-                ISBN  : string;
-                Price : int;
-                t2   : TBookRec1;
-               end;
+Var
+    myVar   : int;
+    myArray : Array[5,5] of int;
+Begin
 
-  
-var    
-    struct : TBookRec2;
-    struct1 : TBookRec1;
-    x : int;
-                 
-begin
-   x:=5;
-    struct.t2.t1.Price:= 100;
-   
-    struct1.Price := struct.t2.t1.Price;
-
-   writeln(struct1.Price);
-   
-end.
+ myArray[2][0]:=  6; 
+ myVar := myArray[2][0];
+ writeln(myArray[2][0]);
+End.

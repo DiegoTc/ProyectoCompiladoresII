@@ -282,3 +282,71 @@ begin
     end
    
 end.
+
+
+/** EJEMPLO ****/
+program Sort(input, output);
+
+type
+    TBookRec = record
+                ISBN  : string;
+                Price : int;
+               end;
+
+    TBookRec1 = record
+                ISBN  : string;
+                Price : int;
+                t1   : TBookRec;
+               end;
+
+    TBookRec2 = record
+                ISBN  : string;
+                Price : int;
+                t2   : TBookRec1;
+               end;
+
+  
+var    
+    struct1 : TBookRec2;
+    struct2 : TBookRec1;
+    x : int;
+                 
+begin
+   x:=5;
+    struct1.t2.t1.Price:= 100;
+   
+    struct2.Price := struct1.t2.t1.Price;
+
+   writeln(struct2.Price);
+   
+end.
+
+/**** EJEMPLO ***/
+
+program Sort(input, output);
+
+type
+    TBookRec = record
+                ISBN  : string;
+                Price : int;
+               end;
+
+    TBookRec1 = record
+                ISBN  : string;
+                Price : int;
+                t1   : TBookRec;
+                Arr : Array[5] of TBookRec;
+               end;
+
+Var
+    myVar   : int;
+    myArray : Array[5,2] of int;
+    arreglo : Array [5] of TBookRec1;
+Begin
+
+arreglo[0].Arr[0].Price :=  6; 
+ myArray[2][1] := arreglo[0].Arr[0].Price;
+ myVar := myArray[2][1];
+
+End.
+

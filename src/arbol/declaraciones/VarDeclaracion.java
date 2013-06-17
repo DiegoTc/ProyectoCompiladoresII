@@ -6,6 +6,7 @@ package arbol.declaraciones;
 
 import Generacion.TablaIds;
 import arbol.tipos.Tipo;
+import arbol.tipos.TipoArray;
 import arbol.tipos.TipoId;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,6 +58,38 @@ public class VarDeclaracion extends Declaracion{
                         InfSemantica.getInstancia().tablaGlobal.put(nombre.get(i), t);
                         TablaIds.getInstancia().addVariable(nombre.get(i),t.toString());
                     }
+                    else{
+                         try {
+                            throw new Exception("Error Semantico--- El Struct " +tid.getNombre()+" no a sido declarado ");
+                        } catch (Exception ex) {
+                            Logger.getLogger(VarDeclaracion.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+                else if(tipo instanceof TipoArray){
+                    TipoArray tarrray= ((TipoArray)tipo);
+                     if(tarrray.getT() instanceof TipoId){
+                         TipoId tid= ((TipoId)tarrray.getT());
+                         if(InfSemantica.getInstancia().tablaGlobal.containsKey(tid.getNombre()))
+                         {
+                             Tipo t= InfSemantica.getInstancia().tablaGlobal.get(tid.getNombre());
+                             tarrray.setT(t);
+                             InfSemantica.getInstancia().tablaGlobal.put(nombre.get(i), tarrray);
+                             TablaIds.getInstancia().addVariable(nombre.get(i),tarrray.toString());;
+                                     
+                         }
+                         else{
+                            try {
+                                throw new Exception("Error Semantico -- El tipo "+ nombre.get(i) + " no a sido declarado");
+                            } catch (Exception ex) {
+                                Logger.getLogger(VarDeclaracion.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                         }
+                     }
+                     else{
+                         InfSemantica.getInstancia().tablaGlobal.put(nombre.get(i), tipo);
+                         TablaIds.getInstancia().addVariable(nombre.get(i),tipo.toString());
+                     }
                 }
                 else
                 {
